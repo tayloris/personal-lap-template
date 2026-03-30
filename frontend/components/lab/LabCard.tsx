@@ -1,37 +1,45 @@
-import type { LabApp } from "@/lib/lab/types";
+"use client";
 
-interface LabCardProps {
+import Link from "next/link";
+import type { LabApp } from "@/lib/lab/types";
+import { Tag } from "@/components/ui/Page";
+
+type LabCardProps = {
   app: LabApp;
-}
+};
 
 export default function LabCard({ app }: LabCardProps) {
-  const statusColor: Record<string, string> = {
-    running: "bg-green-100 text-green-800",
-    stopped: "bg-gray-100 text-gray-800",
-    error: "bg-red-100 text-red-800",
-  };
+  const isClickable = app.status !== "idea";
+
+  const content = (
+    <>
+      <div className="flex items-center gap-3">
+        <span className="font-medium text-zinc-900 dark:text-zinc-100">
+          {app.title}
+        </span>
+        <Tag tone={app.status}>{app.status}</Tag>
+        {app.kind === "site" && <Tag tone="neutral">site</Tag>}
+      </div>
+      <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+        {app.description}
+      </p>
+    </>
+  );
+
+  if (!isClickable) {
+    return (
+      <div className="block rounded-lg border border-zinc-200 p-4 opacity-60 dark:border-zinc-800">
+        {content}
+      </div>
+    );
+  }
 
   return (
-    <div className="rounded-lg border border-gray-200 p-6 shadow-sm">
-      <div className="flex items-start justify-between mb-3">
-        <h2 className="text-xl font-semibold">{app.name}</h2>
-        <span
-          className={`rounded-full px-2 py-1 text-xs font-medium ${statusColor[app.status] ?? "bg-gray-100 text-gray-800"}`}
-        >
-          {app.status}
-        </span>
-      </div>
-      <p className="text-gray-600 text-sm mb-4">{app.description}</p>
-      {app.url && (
-        <a
-          href={app.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:text-blue-800 text-sm underline"
-        >
-          Open App
-        </a>
-      )}
-    </div>
+    <Link
+      href={app.href}
+      className="block rounded-lg border border-zinc-200 p-4 transition-colors hover:border-zinc-300 hover:bg-zinc-50 dark:border-zinc-800 dark:hover:border-zinc-700 dark:hover:bg-zinc-900"
+    >
+      {content}
+    </Link>
   );
 }

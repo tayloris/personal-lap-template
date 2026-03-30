@@ -1,9 +1,13 @@
-export type LabStatus = "running" | "stopped" | "error";
+export type LabStatus = "live" | "building" | "idea";
 
-export interface LabApp {
-  id: string;
-  name: string;
+/** "demo" = experiment built for this site; "site" = standalone product hosted here */
+export type LabKind = "demo" | "site";
+
+export type LabApp = {
+  href: string;
+  title: string;
   description: string;
   status: LabStatus;
-  url?: string;
-}
+  kind?: LabKind;
+  showOnHome?: boolean;
+};
