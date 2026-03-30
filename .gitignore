@@ -1,3 +1,11 @@
+# Secrets & credentials
+*.pem
+*.key
+id_rsa
+id_ed25519
+*service-account*.json
+*credentials*.json
+
 # Dependencies
 node_modules/
 __pycache__/
